@@ -5,11 +5,12 @@
 
 using namespace std;
 
-// dy/dx = diff(x, y)
+// dx/dt = (3 - 2y)x
 float eq1(float t, float x, float y) {
     return (3 - 2 * y) * x;
 }
 
+//dy/dt = (2 - 2x)y
 float eq2(float t, float x, float y) {
     return (2 * x - 2) * y;
 }

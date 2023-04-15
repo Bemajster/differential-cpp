@@ -14,6 +14,18 @@ private:
     float a, b, y0, step, *sol;
 };
 
+class SecondOrderODE {
+public:
+    SecondOrderODE(float a, float b, float y0, float dy0);
+    ~SecondOrderODE();
+
+    void solve(float (*func)(float, float, float), float step); // f(x, y, dy)
+    void print_sol();
+    void save_to_csv(std::string dir);
+
+private:
+    float a, b, y0, dy0, step, *sol;
+};
 
 class FirstOrderODETwoSystem {
 public:

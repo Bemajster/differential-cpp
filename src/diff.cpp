@@ -100,3 +100,18 @@ void FirstOrderODETwoSystem::save_to_csv(std::string dir) {
 
     output.close();
 }
+
+SecondOrderODE::SecondOrderODE(float p_a, float p_b, float p_y0, float p_dy0) {
+    a = p_a;
+    b = p_b;
+    y0 = p_y0;
+    dy0 = p_dy0;
+}
+
+SecondOrderODE::~SecondOrderODE() {
+    delete sol;
+}
+
+void SecondOrderODE::solve(float (*func)(float, float, float), float p_step) {
+    
+}
