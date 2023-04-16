@@ -155,3 +155,62 @@ void SecondOrderODE::save_to_csv(std::string dir) {
 
     output.close();
 }
+
+FirstOrderODEThreeSystem::FirstOrderODEThreeSystem(float p_a, float p_b, float p_x0, float p_y0, float p_z0) {
+    a = p_a;
+    b = p_b;
+    x0 = p_x0;
+    y0 = p_y0;
+    z0 = p_z0;
+}
+
+FirstOrderODEThreeSystem::~FirstOrderODEThreeSystem() {
+    delete sol_x;
+    delete sol_y;
+    delete sol_z;
+}
+
+void FirstOrderODEThreeSystem::solve(float (*func_x)(float, float, float, float), float (*func_y)(float, float, float, float), float(*func_z)(float, float, float, float), float p_step) {
+    step = p_step;
+
+    int arr_size = ceil((b - a) / step) + 1;
+
+    sol_x = new float[arr_size];
+    sol_y = new float[arr_size];
+    sol_z = new float[arr_size];
+
+    sol_x[0] = x0;
+    sol_y[0] = y0;
+    sol_z[0] = z0;
+
+    for(int i = 0; i <= arr_size -1; i++) {
+        float k1 = step * func_x(a + i * step, sol_x[i], sol_y[i], sol_z[i]);
+        float l1 = step * func_y(a + i * step, sol_x[i], sol_y[i], sol_z[i]);
+        float m1 = step * func_z(a + i * step, sol_x[i], sol_y[i], sol_z[i]);
+
+        float k2 = step * func_x(a + i * step + step, sol_x[i] + k1, sol_y[i] + l1, sol_z[i] + m1);
+        float l2 = step * func_y(a + i * step + step, sol_x[i] + k1, sol_y[i] + l1, sol_z[i] + m1);
+        float m2 = step * func_z(a + i * step + step, sol_x[i] + k1, sol_y[i] + l1, sol_z[i] + m1);
+
+        sol_x[i+1] = sol_x[i] + (k1 + k2) / 2;
+        sol_y[i+1] = sol_y[i] + (l1 + l2) / 2;
+        sol_z[i+1] = sol_z[i] + (m1 + m2) / 2;
+    }
+}
+
+void FirstOrderODEThreeSystem::print_sol() {
+    for(int i = 0; i <= ceil((b - a) / step); i++) {
+        std::cout << "t = " << a + i * step << " => x = " << sol_x[i] << " y = " << sol_y[i] << " z = " << sol_z[i] << '\n';
+    }
+}
+
+void FirstOrderODEThreeSystem::save_to_csv(std::string dir) {
+    std::fstream output;
+    output.open(dir, std::ios::out);
+
+    for(int i = 0; i <= ceil((b - a) / step); i++) {
+        output << a + i * step << ";" << sol_x[i] << ";" << sol_y[i] << ";" << sol_z[i] << std::endl;
+    }
+
+    output.close();
+}
