@@ -32,7 +32,8 @@ public:
     FirstOrderODETwoSystem(float a, float b, float x0, float y0);
     ~FirstOrderODETwoSystem();
 
-    void solve(float (*func_x)(float, float, float), float (*func_y)(float, float, float), float step);
+    void solveRK2(float (*func_x)(float, float, float), float (*func_y)(float, float, float), float step);
+    void solveRK4(float (*func_x)(float, float, float), float (*func_y)(float, float, float), float step);
     void print_sol();
     void save_to_csv(std::string dir);
 
