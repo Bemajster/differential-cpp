@@ -113,5 +113,45 @@ SecondOrderODE::~SecondOrderODE() {
 }
 
 void SecondOrderODE::solve(float (*func)(float, float, float), float p_step) {
-    
+    step = p_step;
+
+    int arr_size = ceil((b - a) / step) + 1;
+
+    float *sol_dy;
+
+    sol = new float[arr_size];
+    sol_dy = new float[arr_size];
+
+    sol[0] = y0;
+    sol_dy[0] = dy0;
+
+    for(int i = 0; i <= arr_size - 1; i++) {
+        float k1 = step * sol_dy[i];
+        float l1 = step * func(a + i * step, sol[i], sol_dy[i]);
+
+        float k2 = step * (sol_dy[i] + l1);
+        float l2 = step * func(a + i * step + step, sol[i] + k1, sol_dy[i] + l1);
+
+        sol[i+1] = sol[i] + (k1 + k2) / 2;
+        sol_dy[i+1] = sol_dy[i] + (l1 + l2) / 2;
+    }
+
+    delete sol_dy;
+}
+
+void SecondOrderODE::print_sol() {
+    for(int i = 0; i <= ceil((b - a) / step); i++) {
+        std::cout << "x = " << a + i * step << " => y = " << sol[i] << '\n';
+    }
+}
+
+void SecondOrderODE::save_to_csv(std::string dir) {
+    std::fstream output;
+    output.open(dir, std::ios::out);
+
+    for(int i = 0; i <= ceil((b - a) / step); i++) {
+        output << a + i * step << ";" << sol[i] << std::endl;
+    }
+
+    output.close();
 }
