@@ -19,9 +19,9 @@ float eq3(float t, float x, float y, float z) {
 }
 
 int main() {
-    FirstOrderODEThreeSystem* p = new FirstOrderODEThreeSystem(0, 50, 0, 0.5, 1);
-    p->solve(&eq1, &eq2, &eq3, 0.0001);
-    p->save_to_csv("lorenz_attractor.csv");
+    FirstOrderODEThreeSystem* p = new FirstOrderODEThreeSystem(0, 10, 0, 0.5, 1);
+    p->solveRK4(&eq1, &eq2, &eq3, 0.01);
+    p->save_to_csv("lorenz_attractor_RK4.csv");
 
     return 0;
 }

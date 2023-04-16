@@ -170,7 +170,7 @@ FirstOrderODEThreeSystem::~FirstOrderODEThreeSystem() {
     delete sol_z;
 }
 
-void FirstOrderODEThreeSystem::solve(float (*func_x)(float, float, float, float), float (*func_y)(float, float, float, float), float(*func_z)(float, float, float, float), float p_step) {
+void FirstOrderODEThreeSystem::solveRK2(float (*func_x)(float, float, float, float), float (*func_y)(float, float, float, float), float(*func_z)(float, float, float, float), float p_step) {
     step = p_step;
 
     int arr_size = ceil((b - a) / step) + 1;
@@ -195,6 +195,42 @@ void FirstOrderODEThreeSystem::solve(float (*func_x)(float, float, float, float)
         sol_x[i+1] = sol_x[i] + (k1 + k2) / 2;
         sol_y[i+1] = sol_y[i] + (l1 + l2) / 2;
         sol_z[i+1] = sol_z[i] + (m1 + m2) / 2;
+    }
+}
+
+void FirstOrderODEThreeSystem::solveRK4(float (*func_x)(float, float, float, float), float (*func_y)(float, float, float, float), float(*func_z)(float, float, float, float), float p_step) {
+    step = p_step;
+
+    int arr_size = ceil((b - a) / step) + 1;
+
+    sol_x = new float[arr_size];
+    sol_y = new float[arr_size];
+    sol_z = new float[arr_size];
+
+    sol_x[0] = x0;
+    sol_y[0] = y0;
+    sol_z[0] = z0;
+
+    for(int i = 0; i <= arr_size - 1; i++) {
+        float k1 = func_x(a + i * step, sol_x[i], sol_y[i], sol_z[i]);
+        float l1 = func_y(a + i * step, sol_x[i], sol_y[i], sol_z[i]);
+        float m1 = func_z(a + i * step, sol_x[i], sol_y[i], sol_z[i]);
+
+        float k2 = func_x(a + i * step + step / 2, sol_x[i] + step * k1 / 2, sol_y[i] + step * l1 / 2, sol_z[i] + step * m1 / 2);
+        float l2 = func_y(a + i * step + step / 2, sol_x[i] + step * k1 / 2, sol_y[i] + step * l1 / 2, sol_z[i] + step * m1 / 2);
+        float m2 = func_z(a + i * step + step / 2, sol_x[i] + step * k1 / 2, sol_y[i] + step * l1 / 2, sol_z[i] + step * m1 / 2);
+    
+        float k3 = func_x(a + i * step + step / 2, sol_x[i] + step * k2 / 2, sol_y[i] + step * l2 / 2, sol_z[i] + step * m2 / 2);
+        float l3 = func_y(a + i * step + step / 2, sol_x[i] + step * k2 / 2, sol_y[i] + step * l2 / 2, sol_z[i] + step * m2 / 2);
+        float m3 = func_z(a + i * step + step / 2, sol_x[i] + step * k2 / 2, sol_y[i] + step * l2 / 2, sol_z[i] + step * m2 / 2);
+
+        float k4 = func_x(a + i * step + step, sol_x[i] + step * k3, sol_y[i] + step * l3, sol_z[i] + step * m3);
+        float l4 = func_y(a + i * step + step, sol_x[i] + step * k3, sol_y[i] + step * l3, sol_z[i] + step * m3);
+        float m4 = func_z(a + i * step + step, sol_x[i] + step * k3, sol_y[i] + step * l3, sol_z[i] + step * m3);
+    
+        sol_x[i+1] = sol_x[i] + (k1 + 2 * k2 + 2 * k3 + k4) * step / 6;
+        sol_y[i+1] = sol_y[i] + (l1 + 2 * l2 + 2 * l3 + l4) * step / 6;
+        sol_z[i+1] = sol_z[i] + (m1 + 2 * m2 + 2 * m3 + m4) * step / 6;
     }
 }
 
