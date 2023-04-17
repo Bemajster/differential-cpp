@@ -432,3 +432,44 @@ void ThirdOrderODE::save_to_csv(std::string dir) {
 
     output.close();
 }
+
+void ThirdOrderODE::solveRK4(float (*func)(float, float, float, float), float p_step) {
+    step = p_step;
+
+    int arr_size = ceil((b - a) / step) + 1;
+
+    float *sol_dy, *sol_ddy;
+
+    sol = new float[arr_size];
+    sol_dy = new float[arr_size];
+    sol_ddy = new float[arr_size];
+
+    sol[0] = y0;
+    sol_dy[0] = dy0;
+    sol_ddy[0] = ddy0;
+
+    for(int i = 0; i <= arr_size - 1; i++) {
+        float k1 = sol_dy[i];
+        float l1 = sol_ddy[i];
+        float m1 = func(a + i * step, sol[i], sol_dy[i], sol_ddy[i]);
+
+        float k2 = sol_dy[i] + step * l1 / 2;
+        float l2 = sol_ddy[i] + step * m1 / 2;
+        float m2 = func(a + i * step + step / 2, sol[i] + step * k1 / 2, sol_dy[i] + step * l1 / 2, sol_ddy[i] + step * m1 / 2);
+
+        float k3 = sol_dy[i] + step * l2 / 2;
+        float l3 = sol_ddy[i] + step * m2 / 2;
+        float m3 = func(a + i * step + step / 2, sol[i] + step * k2 / 2, sol_dy[i] + step * l2 / 2, sol_ddy[i] + step * m2 / 2);
+
+        float k4 = sol_dy[i] + step * k3;
+        float l4 = sol_ddy[i] + step * l3;
+        float m4 = func(a + i * step + step, sol[i] + step * k3, sol_dy[i] + step * l3, sol_ddy[i] + step * m3);
+
+        sol[i+1] = sol[i] + (k1 + 2 * k2 + 2 * k3 + k4) * step / 6;
+        sol_dy[i+1] = sol_dy[i] + (l1 + 2 * l2 + 2 * l3 + l4) * step / 6;
+        sol_ddy[i+1] = sol_ddy[i] + (m1 + 2 * m2 + 2 * m3 + m4) * step / 6;
+    }
+
+    delete sol_dy;
+    delete sol_ddy;
+}

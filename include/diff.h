@@ -37,7 +37,8 @@ public:
     ThirdOrderODE(float a, float b, float y0, float dy0, float ddy0);
     ~ThirdOrderODE();
 
-    void solveRK2(float (*func)(float, float, float, float), float step); // f(x, y, dy)
+    void solveRK2(float (*func)(float, float, float, float), float step);
+    void solveRK4(float (*func)(float, float, float, float), float step);
     void print_sol();
     void save_to_csv(std::string dir);
 
