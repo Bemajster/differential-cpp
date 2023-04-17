@@ -322,7 +322,7 @@ void SecondOrderODE::get_sol(float *t, float *y) {
         t[i] = a + i * step;
     }
 
-    y = sol_y;
+    y = sol;
 }
 
 void FirstOrderODE::get_sol(float *t, float *y) {
@@ -335,5 +335,5 @@ void FirstOrderODE::get_sol(float *t, float *y) {
         t[i] = a + i * step;
     }
 
-    y = sol_y;
+    y = sol;
 }
