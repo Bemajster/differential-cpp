@@ -10,6 +10,8 @@ public:
     void print_sol();
     void save_to_csv(std::string dir);
 
+    void get_sol(float *t, float *y);
+
 private:
     float a, b, y0, step, *sol;
 };
@@ -22,6 +24,8 @@ public:
     void solve(float (*func)(float, float, float), float step); // f(x, y, dy)
     void print_sol();
     void save_to_csv(std::string dir);
+
+    void get_sol(float *t, float *y);
 
 private:
     float a, b, y0, dy0, step, *sol;
@@ -37,6 +41,8 @@ public:
     void print_sol();
     void save_to_csv(std::string dir);
 
+    void get_sol(float *t, float *x, float *y);
+
 private:
     float a, b, x0, y0, step, *sol_x, *sol_y;
 };
@@ -50,6 +56,8 @@ public:
     void solveRK4(float (*func_x)(float, float, float, float), float (*func_y)(float, float, float, float), float(*func_z)(float, float, float, float), float step);
     void print_sol();
     void save_to_csv(std::string dir);
+
+    void get_sol(float *t, float *x, float *y, float *z);
 
 private:
     float a, b, x0, y0, z0, step, *sol_x, *sol_y, *sol_z;

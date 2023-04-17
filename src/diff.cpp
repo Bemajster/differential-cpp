@@ -43,7 +43,7 @@ void FirstOrderODE::save_to_csv(std::string dir) {
     output.open(dir, std::ios::out);
 
     for(int i = 0; i <= ceil((b - a) / step); i++) {
-        output << a + i * step << ";" << sol[i] << std::endl;
+        output << a + i * step << "," << sol[i] << std::endl;
     }
 
     output.close();
@@ -124,7 +124,7 @@ void FirstOrderODETwoSystem::save_to_csv(std::string dir) {
     output.open(dir, std::ios::out);
 
     for(int i = 0; i <= ceil((b - a) / step); i++) {
-        output << a + i * step << ";" << sol_x[i] << ";" << sol_y[i] << std::endl;
+        output << a + i * step << "," << sol_x[i] << "," << sol_y[i] << std::endl;
     }
 
     output.close();
@@ -179,7 +179,7 @@ void SecondOrderODE::save_to_csv(std::string dir) {
     output.open(dir, std::ios::out);
 
     for(int i = 0; i <= ceil((b - a) / step); i++) {
-        output << a + i * step << ";" << sol[i] << std::endl;
+        output << a + i * step << "," << sol[i] << std::endl;
     }
 
     output.close();
@@ -274,8 +274,66 @@ void FirstOrderODEThreeSystem::save_to_csv(std::string dir) {
     output.open(dir, std::ios::out);
 
     for(int i = 0; i <= ceil((b - a) / step); i++) {
-        output << a + i * step << ";" << sol_x[i] << ";" << sol_y[i] << ";" << sol_z[i] << std::endl;
+        output << a + i * step << "," << sol_x[i] << "," << sol_y[i] << "," << sol_z[i] << std::endl;
     }
 
     output.close();
+}
+
+void FirstOrderODEThreeSystem::get_sol(float *t, float *x, float *y, float *z) {
+    int arr_size = ceil((b - a) / step) + 1;
+
+    t = new float[arr_size];
+    x = new float[arr_size];
+    y = new float[arr_size];
+    z = new float[arr_size];
+
+    for(int i = 0; i <= arr_size - 1; i++) {
+        t[i] = a + i * step;
+    }
+
+    x = sol_x;
+    y = sol_y;
+    z = sol_z;
+}
+
+void FirstOrderODETwoSystem::get_sol(float *t, float *x, float *y) {
+    int arr_size = ceil((b - a) / step) + 1;
+
+    t = new float[arr_size];
+    x = new float[arr_size];
+    y = new float[arr_size];
+
+    for(int i = 0; i <= arr_size - 1; i++) {
+        t[i] = a + i * step;
+    }
+
+    x = sol_x;
+    y = sol_y;
+}
+
+void SecondOrderODE::get_sol(float *t, float *y) {
+    int arr_size = ceil((b - a) / step) + 1;
+
+    t = new float[arr_size];
+    y = new float[arr_size];
+
+    for(int i = 0; i <= arr_size - 1; i++) {
+        t[i] = a + i * step;
+    }
+
+    y = sol_y;
+}
+
+void FirstOrderODE::get_sol(float *t, float *y) {
+    int arr_size = ceil((b - a) / step) + 1;
+
+    t = new float[arr_size];
+    y = new float[arr_size];
+
+    for(int i = 0; i <= arr_size - 1; i++) {
+        t[i] = a + i * step;
+    }
+
+    y = sol_y;
 }
