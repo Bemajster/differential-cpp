@@ -141,7 +141,7 @@ SecondOrderODE::~SecondOrderODE() {
     delete sol;
 }
 
-void SecondOrderODE::solve(float (*func)(float, float, float), float p_step) {
+void SecondOrderODE::solveRK2(float (*func)(float, float, float), float p_step) {
     step = p_step;
 
     int arr_size = ceil((b - a) / step) + 1;
@@ -163,6 +163,39 @@ void SecondOrderODE::solve(float (*func)(float, float, float), float p_step) {
 
         sol[i+1] = sol[i] + (k1 + k2) / 2;
         sol_dy[i+1] = sol_dy[i] + (l1 + l2) / 2;
+    }
+
+    delete sol_dy;
+}
+
+void SecondOrderODE::solveRK4(float (*func)(float, float, float), float p_step) {
+    step = p_step;
+
+    int arr_size = ceil((b - a) / step) + 1;
+
+    float *sol_dy;
+
+    sol = new float[arr_size];
+    sol_dy = new float[arr_size];
+
+    sol[0] = y0;
+    sol_dy[0] = dy0;
+
+    for(int i = 0; i <= arr_size - 1; i++) {
+        float k1 = sol_dy[i];
+        float l1 = func(a + i * step, sol[i], sol_dy[i]);
+
+        float k2 = sol_dy[i] + step * k1 / 2;
+        float l2 = func(a + i * step + step / 2, sol[i] + step * k1 / 2, sol_dy[i] + step * l1 / 2);
+
+        float k3 = sol_dy[i] + step * k2 / 2;
+        float l3 = func(a + i * step + step / 2, sol[i] + step * k2 / 2, sol_dy[i] + step * l2 / 2);
+
+        float k4 = sol_dy[i] + step * k3;
+        float l4 = func(a + i * step + step, sol[i] + step * k3, sol_dy[i] + step * l3);
+
+        sol[i+1] = sol[i] + (k1 + 2 * k2 + 2 * k3 + k4) * step / 6;
+        sol_dy[i+1] = sol_dy[i] + (l1 + 2 * l2 + 2 * l3 + l4) * step / 6;
     }
 
     delete sol_dy;
@@ -336,4 +369,66 @@ void FirstOrderODE::get_sol(float *t, float *y) {
     }
 
     y = sol;
+}
+
+ThirdOrderODE::ThirdOrderODE(float p_a, float p_b, float p_y0, float p_dy0, float p_ddy0) {
+    a = p_a;
+    b = p_b;
+    y0 = p_y0;
+    dy0 = p_dy0;
+    ddy0 = p_ddy0;
+}
+
+ThirdOrderODE::~ThirdOrderODE() {
+    delete sol;
+}
+
+void ThirdOrderODE::solveRK2(float (*func)(float, float, float, float), float p_step) {
+    step = p_step;
+
+    int arr_size = ceil((b - a) / step) + 1;
+
+    float *sol_dy, *sol_ddy;
+
+    sol = new float[arr_size];
+    sol_dy = new float[arr_size];
+    sol_ddy = new float[arr_size];
+
+    sol[0] = y0;
+    sol_dy[0] = dy0;
+    sol_ddy[0] = ddy0;
+
+    for(int i = 0; i <= arr_size - 1; i++) {
+        float k1 = step * sol_dy[i];
+        float l1 = step * sol_ddy[i];
+        float m1 = step * func(a + i * step, sol[i], sol_dy[i], sol_ddy[i]);
+
+        float k2 = step * (sol_dy[i] + l1);
+        float l2 = step * (sol_ddy[i] + m1);
+        float m2 = step * func(a + i * step + step, sol[i] + k1, sol_dy[i] + l1, sol_ddy[i] + m1);
+
+        sol[i+1] = sol[i] + (k1 + k2) / 2;
+        sol_dy[i+1] = sol_dy[i] + (l1 + l2) / 2;
+        sol_ddy[i+1] = sol_ddy[i] + (m1 + m2) / 2;
+    }
+
+    delete sol_dy;
+    delete sol_ddy;
+}
+
+void ThirdOrderODE::print_sol() {
+    for(int i = 0; i <= ceil((b - a) / step); i++) {
+        std::cout << "x = " << a + i * step << " => y = " << sol[i] << '\n';
+    }
+}
+
+void ThirdOrderODE::save_to_csv(std::string dir) {
+    std::fstream output;
+    output.open(dir, std::ios::out);
+
+    for(int i = 0; i <= ceil((b - a) / step); i++) {
+        output << a + i * step << "," << sol[i] << std::endl;
+    }
+
+    output.close();
 }

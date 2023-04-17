@@ -4,26 +4,14 @@
 
 using namespace std;
 
-float sigma = 10, r = 28, b = 8 / 3;
-
-float eq1(float t, float x, float y, float z) {
-    return sigma * y - sigma * x;
+float eq(float t, float y, float dy, float ddy) {
+    return cos(y) + sin(t);
 }
-
-float eq2(float t, float x, float y, float z) {
-    return -x * z + r * x - y;
-}
-
-float eq3(float t, float x, float y, float z) {
-    return x * y - b * z;
-}
-
-float *sol_x, *sol_y, *sol_z, *t;
 
 int main() {
-    FirstOrderODEThreeSystem* p = new FirstOrderODEThreeSystem(0, 3000, 0, 0.5, 1);
-    p->solveRK4(&eq1, &eq2, &eq3, 0.001);
-    p->get_sol(t, sol_x, sol_y, sol_z);
+    ThirdOrderODE* p = new ThirdOrderODE(0, 10, 1, 0, 0);
+    p->solveRK2(&eq, 0.01);
+    p->save_to_csv("differential.csv");
 
     return 0;
 }

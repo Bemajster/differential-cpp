@@ -21,7 +21,8 @@ public:
     SecondOrderODE(float a, float b, float y0, float dy0);
     ~SecondOrderODE();
 
-    void solve(float (*func)(float, float, float), float step); // f(x, y, dy)
+    void solveRK2(float (*func)(float, float, float), float step); // f(x, y, dy)
+    void solveRK4(float (*func)(float, float, float), float step);
     void print_sol();
     void save_to_csv(std::string dir);
 
@@ -29,6 +30,21 @@ public:
 
 private:
     float a, b, y0, dy0, step, *sol;
+};
+
+class ThirdOrderODE {
+public:
+    ThirdOrderODE(float a, float b, float y0, float dy0, float ddy0);
+    ~ThirdOrderODE();
+
+    void solveRK2(float (*func)(float, float, float, float), float step); // f(x, y, dy)
+    void print_sol();
+    void save_to_csv(std::string dir);
+
+    void get_sol(float *t, float *y);
+
+private:
+    float a, b, y0, dy0, ddy0, step, *sol;
 };
 
 class FirstOrderODETwoSystem {
