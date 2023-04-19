@@ -4,14 +4,19 @@
 
 using namespace std;
 
-float eq(float t, float y, float dy, float ddy) {
-    return cos(y) + sin(t);
+float eq1(float t, float x, float dx, float y, float dy) {
+    return -y;
+}
+
+float eq2(float t, float x, float dx, float y, float dy) {
+    return -x;
 }
 
 int main() {
-    ThirdOrderODE* p = new ThirdOrderODE(0, 10, 1, 0, 0);
-    p->solveRK4(&eq, 0.01);
-    p->save_to_csv("differential.csv");
+    SecondOrderODETwoSystem* p = new SecondOrderODETwoSystem(0, 10, 1, -1, 0, 0);
+    p->solveRK2(&eq1, &eq2, 0.1);
+    p->print_sol();
+    p->save_to_csv("second_order_system.csv");
 
     return 0;
 }
