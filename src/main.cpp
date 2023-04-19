@@ -1,6 +1,6 @@
 #include <iostream>
 #include <math.h>
-#include "diff.h"
+#include "ODE.h"
 
 using namespace std;
 

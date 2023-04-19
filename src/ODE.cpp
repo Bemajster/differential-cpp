@@ -1,4 +1,4 @@
-#include "diff.h"
+#include "ODE.h"
 #include <math.h>
 #include <iostream>
 #include <fstream>
@@ -359,6 +359,19 @@ void SecondOrderODE::get_sol(float *t, float *y) {
 }
 
 void FirstOrderODE::get_sol(float *t, float *y) {
+    int arr_size = ceil((b - a) / step) + 1;
+
+    t = new float[arr_size];
+    y = new float[arr_size];
+
+    for(int i = 0; i <= arr_size - 1; i++) {
+        t[i] = a + i * step;
+    }
+
+    y = sol;
+}
+
+void ThirdOrderODE::get_sol(float *t, float *y) {
     int arr_size = ceil((b - a) / step) + 1;
 
     t = new float[arr_size];
