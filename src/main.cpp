@@ -20,8 +20,21 @@ float eq4(float t, float x, float y, float z, float w) {
     return y-z;
 }*/
 
-float eq(float t, float y) {
-    return y;
+float func_list(int n, float t, float x[]) {
+    switch(n) {
+        case 0:
+            return 10 * (x[1] - x[0]);
+            break;
+        case 1:
+            return x[0]*(28-x[2])-x[1];
+            break;
+        case 2:
+            return x[0] * x[1] - 8 * x[2] / 3;
+            break;
+        default:
+            return 0;
+            break;
+    }
 }
 
 int main() {
@@ -30,9 +43,11 @@ int main() {
     p->solveRK4(&eq1, &eq2, &eq3, &eq4, 0.01);
     p->save_to_csv("four_RK4_system.csv");*/
 
-    FirstOrderODE* p = new FirstOrderODE(0, 5, 1);
-    p->solveRK2(&eq, 0.01);
-    p->save_to_csv("exponential.csv");
+    float sol0[] = {1, 0.5, 0};
+
+    FirstOrderODESystem* s = new FirstOrderODESystem(0, 30, 3, sol0);
+    s->solveRK2(&func_list, 0.001);
+    s->save_to_csv("lorenz.csv");
 
     return 0;
 }

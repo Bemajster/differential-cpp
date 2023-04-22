@@ -2,6 +2,7 @@
 #include <math.h>
 #include <iostream>
 #include <fstream>
+#include <array>
 
 FirstOrderODE::FirstOrderODE(float p_a, float p_b, float p_y0) {
     a = p_a;
@@ -714,4 +715,85 @@ void SecondOrderODETwoSystem::get_sol(float *t, float *x, float *y) {
 
     x = sol_x;
     y = sol_y;
+}
+
+FirstOrderODESystem::FirstOrderODESystem(float p_a, float p_b, int p_order, float p_sol0[]) {
+    a = p_a;
+    b = p_b;
+
+    order = p_order;
+
+    sol0 = new float[order];
+
+    sol0 = p_sol0;
+
+    sol = new float*[order];
+}
+
+FirstOrderODESystem::~FirstOrderODESystem() {
+    delete sol0;
+    
+    for(int i = 0; i < order; i++) {
+        delete sol[i];
+    }
+
+    delete sol;
+}
+
+void FirstOrderODESystem::solveRK2(float (*func_list)(int, float, float[]), float p_step) {
+    step = p_step;
+
+    int arr_size = ceil((b - a) / step) + 1;
+
+    for(int i = 0; i < order; i++) {
+        sol[i] = new float[arr_size];
+        sol[i][0] = sol0[i];
+    }
+
+    for(int i = 0; i < arr_size; i++) {
+        float k1n[order], k2n[order];
+
+        for(int j = 0; j < order; j++) {
+            float args[order];
+
+            for(int k = 0; k < order; k++) {
+                args[k] = sol[k][i];
+            }
+
+            k1n[j] = step * func_list(j, a + i * step, args);
+        }
+
+        for(int j = 0; j < order; j++) {
+            float args[order];
+
+            for(int k = 0; k < order; k++) {
+                args[k] = sol[k][i] + k1n[k];
+            }
+
+            k2n[j] = step * func_list(j, a + i * step + step, args);
+        }
+
+        for(int j = 0; j < order; j++) {
+            sol[j][i + 1] = sol[j][i] + (k1n[j] + k2n[j]) / 2;
+        }
+    }
+}
+
+void FirstOrderODESystem::save_to_csv(std::string dir) {
+    std::fstream output;
+    output.open(dir, std::ios::out);
+
+    for(int i = 0; i <= ceil((b - a) / step); i++) {
+        output << a + i * step;
+        for(int j = 0; j < order; j++) {
+            output << "," << sol[j][i];
+        }
+        output << std::endl;
+    }
+
+    output.close();
+}
+
+int FirstOrderODESystem::get_order() {
+    return order;
 }

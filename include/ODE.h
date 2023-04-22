@@ -1,6 +1,11 @@
 #pragma once
 #include <iostream>
 
+/* 
+    RK4 <=> Runge-Kutta 4th order method
+    RK2 <=> Runge-Kutta 2nd order method
+*/
+
 class FirstOrderODE {
 public:
     FirstOrderODE(float a, float b, float y0);
@@ -115,13 +120,15 @@ private:
 
 class FirstOrderODESystem {
 public:
-    FirstOrderODESystem(float a, float b, float sol0[]);
+    FirstOrderODESystem(float a, float b, int order, float sol0[]);
     ~FirstOrderODESystem();
 
-    void solveRK2(float (*func_list)(int, float[]), float step);
-    void solveRK4(float (*func_list)(int, float[]), float step);
+    void solveRK2(float (*func_list)(int, float, float[]), float step);
+    void solveRK4(float (*func_list)(int, float, float[]), float step);
     void print_sol();
     void save_to_csv(std::string dir);
+
+    int get_order();
 
     void get_sol(float sols[]);
 
