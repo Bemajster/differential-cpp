@@ -6,7 +6,8 @@ public:
     FirstOrderODE(float a, float b, float y0);
     ~FirstOrderODE();
 
-    void solve(float (*func)(float, float), float step);
+    void solveRK2(float (*func)(float, float), float step);
+    void solveRK4(float (*func)(float, float), float step);
     void print_sol();
     void save_to_csv(std::string dir);
 
@@ -110,4 +111,21 @@ public:
 
 private:
     float a, b, x0, dx0, y0, dy0, step, *sol_x, *sol_y;
+};
+
+class FirstOrderODESystem {
+public:
+    FirstOrderODESystem(float a, float b, float sol0[]);
+    ~FirstOrderODESystem();
+
+    void solveRK2(float (*func_list)(int, float[]), float step);
+    void solveRK4(float (*func_list)(int, float[]), float step);
+    void print_sol();
+    void save_to_csv(std::string dir);
+
+    void get_sol(float sols[]);
+
+private:
+    float a, b, step, **sol, *sol0;
+    int order;
 };

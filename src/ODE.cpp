@@ -13,7 +13,24 @@ FirstOrderODE::~FirstOrderODE() {
     delete sol;
 }
 
-void FirstOrderODE::solve(float (*func)(float, float), float p_step) {
+void FirstOrderODE::solveRK2(float (*func)(float, float), float p_step) {
+    step = p_step;
+
+    int arr_size = ceil((b - a) / step) + 1;
+
+    sol = new float[arr_size];
+
+    sol[0] = y0;
+
+    for(int i = 0; i <= arr_size - 1; i++) {
+        float k1 = step * func(a + i * step, sol[i]);
+        float k2 = step * func(a + i * step + step, sol[i] + k1);
+
+        sol[i+1] = sol[i] + (k1 + k2) / 2;
+    }
+}
+
+void FirstOrderODE::solveRK4(float (*func)(float, float), float p_step) {
     step = p_step;
 
     int arr_size = ceil((b - a) / step) + 1;
