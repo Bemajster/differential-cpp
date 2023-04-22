@@ -47,7 +47,7 @@ int main() {
 
     FirstOrderODESystem* s = new FirstOrderODESystem(0, 30, 3, sol0);
     s->solveRK2(&func_list, 0.001);
-    s->save_to_csv("lorenz.csv");
+    s->print_sol();
 
     return 0;
 }

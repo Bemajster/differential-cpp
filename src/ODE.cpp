@@ -779,6 +779,16 @@ void FirstOrderODESystem::solveRK2(float (*func_list)(int, float, float[]), floa
     }
 }
 
+void FirstOrderODESystem::print_sol() {
+    for(int i = 0; i <= ceil((b - a) / step); i++) {
+        std::cout << "t = " << a + i * step << " =>";
+        for(int j = 0; j < order; j++) {
+            std::cout << " x" << j << " = " << sol[j][i]; 
+        }
+        std::cout << '\n';
+    }
+}
+
 void FirstOrderODESystem::save_to_csv(std::string dir) {
     std::fstream output;
     output.open(dir, std::ios::out);
