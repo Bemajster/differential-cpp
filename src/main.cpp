@@ -4,19 +4,27 @@
 
 using namespace std;
 
-float eq1(float t, float x, float dx, float y, float dy) {
-    return -y;
+float eq1(float t, float x, float y, float z, float w) {
+    return (5 - x) * y;
 }
 
-float eq2(float t, float x, float dx, float y, float dy) {
-    return -x;
+float eq2(float t, float x, float y, float z, float w) {
+    return - z * x;
+}
+
+float eq3(float t, float x, float y, float z, float w) {
+    return (8 + w) - y;
+}
+
+float eq4(float t, float x, float y, float z, float w) {
+    return y-z;
 }
 
 int main() {
-    SecondOrderODETwoSystem* p = new SecondOrderODETwoSystem(0, 10, 1, -1, 0, 0);
-    p->solveRK2(&eq1, &eq2, 0.1);
-    p->print_sol();
-    p->save_to_csv("second_order_system.csv");
+    FirstOrderODEFourSystem* p = new FirstOrderODEFourSystem(0, 5, 1, 0.5, 0, -1);
+
+    p->solveRK4(&eq1, &eq2, &eq3, &eq4, 0.01);
+    p->save_to_csv("four_RK4_system.csv");
 
     return 0;
 }

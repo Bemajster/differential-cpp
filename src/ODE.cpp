@@ -536,6 +536,49 @@ void FirstOrderODEFourSystem::solveRK2(float (*func_x)(float, float, float, floa
     }
 }
 
+void FirstOrderODEFourSystem::solveRK4(float (*func_x)(float, float, float, float, float), float (*func_y)(float, float, float, float, float), float(*func_z)(float, float, float, float, float), float (*func_w)(float, float, float, float, float), float p_step) {
+    step = p_step;
+
+    int arr_size = ceil((b - a) / step) + 1;
+
+    sol_x = new float[arr_size];
+    sol_y = new float[arr_size];
+    sol_z = new float[arr_size];
+    sol_w = new float[arr_size];
+
+    sol_x[0] = x0;
+    sol_y[0] = y0;
+    sol_z[0] = z0;
+    sol_w[0] = w0;
+
+    for(int i = 0; i <= arr_size - 1; i++) {
+        float k1 = func_x(a + i * step, sol_x[i], sol_y[i], sol_z[i], sol_w[i]);
+        float l1 = func_y(a + i * step, sol_x[i], sol_y[i], sol_z[i], sol_w[i]);
+        float m1 = func_z(a + i * step, sol_x[i], sol_y[i], sol_z[i], sol_w[i]);
+        float n1 = func_w(a + i * step, sol_x[i], sol_y[i], sol_z[i], sol_w[i]);
+
+        float k2 = func_x(a + i * step + step / 2, sol_x[i] + step * k1 / 2, sol_y[i] + step * l1 / 2, sol_z[i] + step * m1 / 2, sol_w[i] + step * n1 / 2);
+        float l2 = func_y(a + i * step + step / 2, sol_x[i] + step * k1 / 2, sol_y[i] + step * l1 / 2, sol_z[i] + step * m1 / 2, sol_w[i] + step * n1 / 2);
+        float m2 = func_z(a + i * step + step / 2, sol_x[i] + step * k1 / 2, sol_y[i] + step * l1 / 2, sol_z[i] + step * m1 / 2, sol_w[i] + step * n1 / 2);
+        float n2 = func_w(a + i * step + step / 2, sol_x[i] + step * k1 / 2, sol_y[i] + step * l1 / 2, sol_z[i] + step * m1 / 2, sol_w[i] + step * n1 / 2);
+    
+        float k3 = func_x(a + i * step + step / 2, sol_x[i] + step * k2 / 2, sol_y[i] + step * l2 / 2, sol_z[i] + step * m2 / 2, sol_w[i] + step * n2 / 2);
+        float l3 = func_y(a + i * step + step / 2, sol_x[i] + step * k2 / 2, sol_y[i] + step * l2 / 2, sol_z[i] + step * m2 / 2, sol_w[i] + step * n2 / 2);
+        float m3 = func_z(a + i * step + step / 2, sol_x[i] + step * k2 / 2, sol_y[i] + step * l2 / 2, sol_z[i] + step * m2 / 2, sol_w[i] + step * n2 / 2);
+        float n3 = func_w(a + i * step + step / 2, sol_x[i] + step * k2 / 2, sol_y[i] + step * l2 / 2, sol_z[i] + step * m2 / 2, sol_w[i] + step * n2 / 2);
+    
+        float k4 = func_x(a + i * step, sol_x[i] + step * k3, sol_y[i] + step * l3, sol_z[i] + step * m3, sol_w[i] + step * n3);
+        float l4 = func_y(a + i * step, sol_x[i] + step * k3, sol_y[i] + step * l3, sol_z[i] + step * m3, sol_w[i] + step * n3);
+        float m4 = func_z(a + i * step, sol_x[i] + step * k3, sol_y[i] + step * l3, sol_z[i] + step * m3, sol_w[i] + step * n3);
+        float n4 = func_w(a + i * step, sol_x[i] + step * k3, sol_y[i] + step * l3, sol_z[i] + step * m3, sol_w[i] + step * n3);
+
+        sol_x[i+1] = sol_x[i] + (k1 + 2 * k2 + 2 * k3 + k4) * step / 6;
+        sol_y[i+1] = sol_y[i] + (l1 + 2 * l2 + 2 * l3 + l4) * step / 6;
+        sol_z[i+1] = sol_z[i] + (m1 + 2 * m2 + 2 * m3 + m4) * step / 6;
+        sol_w[i+1] = sol_w[i] + (n1 + 2 * n2 + 2 * n3 + n4) * step / 6;
+    }
+}
+
 void FirstOrderODEFourSystem::print_sol() {
     for(int i = 0; i <= ceil((b - a) / step); i++) {
         std::cout << "t = " << a + i * step << " => x = " << sol_x[i] << " y = " << sol_y[i] << " z = " << sol_z[i] << " w = " << sol_w[i] << '\n';
