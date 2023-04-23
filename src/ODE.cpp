@@ -56,12 +56,12 @@ void FirstOrderODE::print_sol() {
     }
 }
 
-void FirstOrderODE::save_to_csv(std::string dir) {
+void FirstOrderODE::save_to_csv(std::string dir, std::string separator) {
     std::fstream output;
     output.open(dir, std::ios::out);
 
     for(int i = 0; i <= ceil((b - a) / step); i++) {
-        output << a + i * step << "," << sol[i] << std::endl;
+        output << a + i * step << separator << sol[i] << std::endl;
     }
 
     output.close();
@@ -137,12 +137,12 @@ void FirstOrderODETwoSystem::print_sol() {
     }
 }
 
-void FirstOrderODETwoSystem::save_to_csv(std::string dir) {
+void FirstOrderODETwoSystem::save_to_csv(std::string dir, std::string separator) {
     std::fstream output;
     output.open(dir, std::ios::out);
 
     for(int i = 0; i <= ceil((b - a) / step); i++) {
-        output << a + i * step << "," << sol_x[i] << "," << sol_y[i] << std::endl;
+        output << a + i * step << separator << sol_x[i] << separator << sol_y[i] << std::endl;
     }
 
     output.close();
@@ -225,12 +225,12 @@ void SecondOrderODE::print_sol() {
     }
 }
 
-void SecondOrderODE::save_to_csv(std::string dir) {
+void SecondOrderODE::save_to_csv(std::string dir, std::string separator) {
     std::fstream output;
     output.open(dir, std::ios::out);
 
     for(int i = 0; i <= ceil((b - a) / step); i++) {
-        output << a + i * step << "," << sol[i] << std::endl;
+        output << a + i * step << separator << sol[i] << std::endl;
     }
 
     output.close();
@@ -320,12 +320,12 @@ void FirstOrderODEThreeSystem::print_sol() {
     }
 }
 
-void FirstOrderODEThreeSystem::save_to_csv(std::string dir) {
+void FirstOrderODEThreeSystem::save_to_csv(std::string dir, std::string separator) {
     std::fstream output;
     output.open(dir, std::ios::out);
 
     for(int i = 0; i <= ceil((b - a) / step); i++) {
-        output << a + i * step << "," << sol_x[i] << "," << sol_y[i] << "," << sol_z[i] << std::endl;
+        output << a + i * step << separator << sol_x[i] << separator << sol_y[i] << separator << sol_z[i] << std::endl;
     }
 
     output.close();
@@ -453,12 +453,12 @@ void ThirdOrderODE::print_sol() {
     }
 }
 
-void ThirdOrderODE::save_to_csv(std::string dir) {
+void ThirdOrderODE::save_to_csv(std::string dir, std::string separator) {
     std::fstream output;
     output.open(dir, std::ios::out);
 
     for(int i = 0; i <= ceil((b - a) / step); i++) {
-        output << a + i * step << "," << sol[i] << std::endl;
+        output << a + i * step << separator << sol[i] << std::endl;
     }
 
     output.close();
@@ -603,12 +603,12 @@ void FirstOrderODEFourSystem::print_sol() {
     }
 }
 
-void FirstOrderODEFourSystem::save_to_csv(std::string dir) {
+void FirstOrderODEFourSystem::save_to_csv(std::string dir, std::string separator) {
     std::fstream output;
     output.open(dir, std::ios::out);
 
     for(int i = 0; i <= ceil((b - a) / step); i++) {
-        output << a + i * step << "," << sol_x[i] << "," << sol_y[i] << "," << sol_z[i] << "," << sol_w[i] << std::endl;
+        output << a + i * step << separator << sol_x[i] << separator << sol_y[i] << separator << sol_z[i] << separator << sol_w[i] << std::endl;
     }
 
     output.close();
@@ -691,12 +691,12 @@ void SecondOrderODETwoSystem::print_sol() {
     }
 }
 
-void SecondOrderODETwoSystem::save_to_csv(std::string dir) {
+void SecondOrderODETwoSystem::save_to_csv(std::string dir, std::string separator) {
     std::fstream output;
     output.open(dir, std::ios::out);
 
     for(int i = 0; i <= ceil((b - a) / step); i++) {
-        output << a + i * step << "," << sol_x[i] << "," << sol_y[i] << "," << std::endl;
+        output << a + i * step << separator << sol_x[i] << separator << sol_y[i] << separator << std::endl;
     }
 
     output.close();
@@ -789,14 +789,14 @@ void FirstOrderODESystem::print_sol() {
     }
 }
 
-void FirstOrderODESystem::save_to_csv(std::string dir) {
+void FirstOrderODESystem::save_to_csv(std::string dir, std::string separator) {
     std::fstream output;
     output.open(dir, std::ios::out);
 
     for(int i = 0; i <= ceil((b - a) / step); i++) {
         output << a + i * step;
         for(int j = 0; j < order; j++) {
-            output << "," << sol[j][i];
+            output << separator << sol[j][i];
         }
         output << std::endl;
     }

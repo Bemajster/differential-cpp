@@ -14,7 +14,7 @@ public:
     void solveRK2(float (*func)(float, float), float step);
     void solveRK4(float (*func)(float, float), float step);
     void print_sol();
-    void save_to_csv(std::string dir);
+    void save_to_csv(std::string dir, std::string separator);
 
     void get_sol(float *t, float *y);
 
@@ -30,7 +30,7 @@ public:
     void solveRK2(float (*func)(float, float, float), float step); // f(x, y, dy)
     void solveRK4(float (*func)(float, float, float), float step);
     void print_sol();
-    void save_to_csv(std::string dir);
+    void save_to_csv(std::string dir, std::string separator);
 
     void get_sol(float *t, float *y);
 
@@ -46,7 +46,7 @@ public:
     void solveRK2(float (*func)(float, float, float, float), float step);
     void solveRK4(float (*func)(float, float, float, float), float step);
     void print_sol();
-    void save_to_csv(std::string dir);
+    void save_to_csv(std::string dir, std::string separator);
 
     void get_sol(float *t, float *y);
 
@@ -62,7 +62,7 @@ public:
     void solveRK2(float (*func_x)(float, float, float), float (*func_y)(float, float, float), float step);
     void solveRK4(float (*func_x)(float, float, float), float (*func_y)(float, float, float), float step);
     void print_sol();
-    void save_to_csv(std::string dir);
+    void save_to_csv(std::string dir, std::string separator);
 
     void get_sol(float *t, float *x, float *y);
 
@@ -78,7 +78,7 @@ public:
     void solveRK2(float (*func_x)(float, float, float, float), float (*func_y)(float, float, float, float), float(*func_z)(float, float, float, float), float step);
     void solveRK4(float (*func_x)(float, float, float, float), float (*func_y)(float, float, float, float), float(*func_z)(float, float, float, float), float step);
     void print_sol();
-    void save_to_csv(std::string dir);
+    void save_to_csv(std::string dir, std::string separator);
 
     void get_sol(float *t, float *x, float *y, float *z);
 
@@ -94,7 +94,7 @@ public:
     void solveRK2(float (*func_x)(float, float, float, float, float), float (*func_y)(float, float, float, float, float), float(*func_z)(float, float, float, float, float), float (*func_w)(float, float, float, float, float), float step);
     void solveRK4(float (*func_x)(float, float, float, float, float), float (*func_y)(float, float, float, float, float), float(*func_z)(float, float, float, float, float), float (*func_w)(float, float, float, float, float), float step);
     void print_sol();
-    void save_to_csv(std::string dir);
+    void save_to_csv(std::string dir, std::string separator);
 
     void get_sol(float *t, float *x, float *y, float *z, float *w);
 
@@ -110,7 +110,7 @@ public:
     void solveRK2(float (*func_x)(float, float, float, float, float), float (*func_y)(float, float, float, float, float), float step);
     void solveRK4(float (*func_x)(float, float, float, float, float), float (*func_y)(float, float, float, float, float), float step);
     void print_sol();
-    void save_to_csv(std::string dir);
+    void save_to_csv(std::string dir, std::string separator);
 
     void get_sol(float *t, float *x, float *y);
 
@@ -126,7 +126,7 @@ public:
     void solveRK2(float (*func_list)(int, float, float[]), float step);
     void solveRK4(float (*func_list)(int, float, float[]), float step);
     void print_sol();
-    void save_to_csv(std::string dir);
+    void save_to_csv(std::string dir, std::string separator);
 
     int get_order();
 
