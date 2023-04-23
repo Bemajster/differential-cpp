@@ -4,6 +4,7 @@
 
 using namespace std;
 
+
 float func_list(int n, float t, float x[]) {
     switch(n) {
         case 0:
@@ -28,9 +29,9 @@ int main() {
 
     FirstOrderODESystem* s = new FirstOrderODESystem(0, 200, 3, sol0);
     s->solveRK4(&func_list, 0.001);
-    s->get_sol(t, sols);
+    float **sols = s->get_sol();
     s->save_to_csv("Sakarya.csv", ",");
-    cout << t[5] << endl;
+    cout << sols[0][1500] << " " << sols[1][1500] << " " << sols[2][1500] << endl;
 
     return 0;
 }

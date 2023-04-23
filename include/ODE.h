@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <math.h>
 
 /* 
     RK4 <=> Runge-Kutta 4th order method
@@ -16,6 +17,23 @@ public:
     void print_sol();
     void save_to_csv(std::string dir, std::string separator);
 
+    float* get_sol() {
+        return sol;
+    }
+
+    float* get_interval() {
+        float *intr;
+
+        int arr_size = ceil((b - a) / step) + 1;
+        intr = new float[arr_size];
+
+        for(int i = 0; i < arr_size; i++) {
+            intr[i] = a + i * step;
+        }
+
+        return intr;
+    }
+
 private:
     float a, b, y0, step, *sol;
 };
@@ -29,6 +47,23 @@ public:
     void solveRK4(float (*func)(float, float, float), float step);
     void print_sol();
     void save_to_csv(std::string dir, std::string separator);
+
+    float* get_sol() {
+        return sol;
+    }
+
+    float* get_interval() {
+        float *intr;
+
+        int arr_size = ceil((b - a) / step) + 1;
+        intr = new float[arr_size];
+
+        for(int i = 0; i < arr_size; i++) {
+            intr[i] = a + i * step;
+        }
+
+        return intr;
+    }
 
 private:
     float a, b, y0, dy0, step, *sol;
@@ -44,6 +79,23 @@ public:
     void print_sol();
     void save_to_csv(std::string dir, std::string separator);
 
+    float* get_sol() {
+        return sol;
+    }
+
+    float* get_interval() {
+        float *intr;
+
+        int arr_size = ceil((b - a) / step) + 1;
+        intr = new float[arr_size];
+
+        for(int i = 0; i < arr_size; i++) {
+            intr[i] = a + i * step;
+        }
+
+        return intr;
+    }
+
 private:
     float a, b, y0, dy0, ddy0, step, *sol;
 };
@@ -57,6 +109,27 @@ public:
     void solveRK4(float (*func_x)(float, float, float), float (*func_y)(float, float, float), float step);
     void print_sol();
     void save_to_csv(std::string dir, std::string separator);
+
+    float** get_sol() {
+        float **sol;
+        sol = new float*[2];
+        sol[0] = sol_x;
+        sol[1] = sol_y;
+        return sol;
+    }
+
+    float* get_interval() {
+        float *intr;
+
+        int arr_size = ceil((b - a) / step) + 1;
+        intr = new float[arr_size];
+
+        for(int i = 0; i < arr_size; i++) {
+            intr[i] = a + i * step;
+        }
+
+        return intr;
+    }
 
 private:
     float a, b, x0, y0, step, *sol_x, *sol_y;
@@ -72,6 +145,28 @@ public:
     void print_sol();
     void save_to_csv(std::string dir, std::string separator);
 
+    float** get_sol() {
+        float **sol;
+        sol = new float*[3];
+        sol[0] = sol_x;
+        sol[1] = sol_y;
+        sol[2] = sol_z;
+        return sol;
+    }
+
+    float* get_interval() {
+        float *intr;
+
+        int arr_size = ceil((b - a) / step) + 1;
+        intr = new float[arr_size];
+
+        for(int i = 0; i < arr_size; i++) {
+            intr[i] = a + i * step;
+        }
+
+        return intr;
+    }
+
 private:
     float a, b, x0, y0, z0, step, *sol_x, *sol_y, *sol_z;
 };
@@ -86,6 +181,29 @@ public:
     void print_sol();
     void save_to_csv(std::string dir, std::string separator);
 
+    float** get_sol() {
+        float **sol;
+        sol = new float*[4];
+        sol[0] = sol_x;
+        sol[1] = sol_y;
+        sol[2] = sol_z;
+        sol[3] = sol_w;
+        return sol;
+    }
+
+    float* get_interval() {
+        float *intr;
+
+        int arr_size = ceil((b - a) / step) + 1;
+        intr = new float[arr_size];
+
+        for(int i = 0; i < arr_size; i++) {
+            intr[i] = a + i * step;
+        }
+
+        return intr;
+    }
+
 private:
     float a, b, x0, y0, z0, w0, step, *sol_x, *sol_y, *sol_z, *sol_w;
 };
@@ -99,6 +217,27 @@ public:
     void solveRK4(float (*func_x)(float, float, float, float, float), float (*func_y)(float, float, float, float, float), float step);
     void print_sol();
     void save_to_csv(std::string dir, std::string separator);
+
+    float** get_sol() {
+        float **sol;
+        sol = new float*[2];
+        sol[0] = sol_x;
+        sol[1] = sol_y;
+        return sol;
+    }
+
+    float* get_interval() {
+        float *intr;
+
+        int arr_size = ceil((b - a) / step) + 1;
+        intr = new float[arr_size];
+
+        for(int i = 0; i < arr_size; i++) {
+            intr[i] = a + i * step;
+        }
+
+        return intr;
+    }
 
 private:
     float a, b, x0, dx0, y0, dy0, step, *sol_x, *sol_y;
@@ -115,6 +254,23 @@ public:
     void save_to_csv(std::string dir, std::string separator);
 
     int get_order();
+
+    float** get_sol() {
+        return sol;
+    }
+
+    float* get_interval() {
+        float *intr;
+
+        int arr_size = ceil((b - a) / step) + 1;
+        intr = new float[arr_size];
+
+        for(int i = 0; i < arr_size; i++) {
+            intr[i] = a + i * step;
+        }
+
+        return intr;
+    }
 
 private:
     float a, b, step, **sol, *sol0;
