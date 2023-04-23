@@ -606,7 +606,7 @@ void SecondOrderODETwoSystem::save_to_csv(std::string dir, std::string separator
     output.open(dir, std::ios::out);
 
     for(int i = 0; i <= ceil((b - a) / step); i++) {
-        output << a + i * step << separator << sol_x[i] << separator << sol_y[i] << separator << std::endl;
+        output << a + i * step << separator << sol_x[i] << separator << sol_y[i] << std::endl;
     }
 
     output.close();
