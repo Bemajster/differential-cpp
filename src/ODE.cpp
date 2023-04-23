@@ -331,77 +331,6 @@ void FirstOrderODEThreeSystem::save_to_csv(std::string dir, std::string separato
     output.close();
 }
 
-void FirstOrderODEThreeSystem::get_sol(float *t, float *x, float *y, float *z) {
-    int arr_size = ceil((b - a) / step) + 1;
-
-    t = new float[arr_size];
-    x = new float[arr_size];
-    y = new float[arr_size];
-    z = new float[arr_size];
-
-    for(int i = 0; i <= arr_size - 1; i++) {
-        t[i] = a + i * step;
-    }
-
-    x = sol_x;
-    y = sol_y;
-    z = sol_z;
-}
-
-void FirstOrderODETwoSystem::get_sol(float *t, float *x, float *y) {
-    int arr_size = ceil((b - a) / step) + 1;
-
-    t = new float[arr_size];
-    x = new float[arr_size];
-    y = new float[arr_size];
-
-    for(int i = 0; i <= arr_size - 1; i++) {
-        t[i] = a + i * step;
-    }
-
-    x = sol_x;
-    y = sol_y;
-}
-
-void SecondOrderODE::get_sol(float *t, float *y) {
-    int arr_size = ceil((b - a) / step) + 1;
-
-    t = new float[arr_size];
-    y = new float[arr_size];
-
-    for(int i = 0; i <= arr_size - 1; i++) {
-        t[i] = a + i * step;
-    }
-
-    y = sol;
-}
-
-void FirstOrderODE::get_sol(float *t, float *y) {
-    int arr_size = ceil((b - a) / step) + 1;
-
-    t = new float[arr_size];
-    y = new float[arr_size];
-
-    for(int i = 0; i <= arr_size - 1; i++) {
-        t[i] = a + i * step;
-    }
-
-    y = sol;
-}
-
-void ThirdOrderODE::get_sol(float *t, float *y) {
-    int arr_size = ceil((b - a) / step) + 1;
-
-    t = new float[arr_size];
-    y = new float[arr_size];
-
-    for(int i = 0; i <= arr_size - 1; i++) {
-        t[i] = a + i * step;
-    }
-
-    y = sol;
-}
-
 ThirdOrderODE::ThirdOrderODE(float p_a, float p_b, float p_y0, float p_dy0, float p_ddy0) {
     a = p_a;
     b = p_b;
@@ -614,25 +543,6 @@ void FirstOrderODEFourSystem::save_to_csv(std::string dir, std::string separator
     output.close();
 }
 
-void FirstOrderODEFourSystem::get_sol(float *t, float *x, float *y, float *z, float *w) {
-    int arr_size = ceil((b - a) / step) + 1;
-
-    t = new float[arr_size];
-    x = new float[arr_size];
-    y = new float[arr_size];
-    z = new float[arr_size];
-    w = new float[arr_size];
-
-    for(int i = 0; i <= arr_size - 1; i++) {
-        t[i] = a + i * step;
-    }
-
-    x = sol_x;
-    y = sol_y;
-    z = sol_z;
-    w = sol_w;
-}
-
 SecondOrderODETwoSystem::SecondOrderODETwoSystem(float p_a, float p_b, float p_x0, float p_dx0, float p_y0, float p_dy0) {
     a = p_a;
     b = p_b;
@@ -700,21 +610,6 @@ void SecondOrderODETwoSystem::save_to_csv(std::string dir, std::string separator
     }
 
     output.close();
-}
-
-void SecondOrderODETwoSystem::get_sol(float *t, float *x, float *y) {
-    int arr_size = ceil((b - a) / step) + 1;
-
-    t = new float[arr_size];
-    x = new float[arr_size];
-    y = new float[arr_size];
-
-    for(int i = 0; i <= arr_size - 1; i++) {
-        t[i] = a + i * step;
-    }
-
-    x = sol_x;
-    y = sol_y;
 }
 
 FirstOrderODESystem::FirstOrderODESystem(float p_a, float p_b, int p_order, float p_sol0[]) {

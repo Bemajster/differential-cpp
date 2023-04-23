@@ -16,8 +16,6 @@ public:
     void print_sol();
     void save_to_csv(std::string dir, std::string separator);
 
-    void get_sol(float *t, float *y);
-
 private:
     float a, b, y0, step, *sol;
 };
@@ -31,8 +29,6 @@ public:
     void solveRK4(float (*func)(float, float, float), float step);
     void print_sol();
     void save_to_csv(std::string dir, std::string separator);
-
-    void get_sol(float *t, float *y);
 
 private:
     float a, b, y0, dy0, step, *sol;
@@ -48,8 +44,6 @@ public:
     void print_sol();
     void save_to_csv(std::string dir, std::string separator);
 
-    void get_sol(float *t, float *y);
-
 private:
     float a, b, y0, dy0, ddy0, step, *sol;
 };
@@ -63,8 +57,6 @@ public:
     void solveRK4(float (*func_x)(float, float, float), float (*func_y)(float, float, float), float step);
     void print_sol();
     void save_to_csv(std::string dir, std::string separator);
-
-    void get_sol(float *t, float *x, float *y);
 
 private:
     float a, b, x0, y0, step, *sol_x, *sol_y;
@@ -80,8 +72,6 @@ public:
     void print_sol();
     void save_to_csv(std::string dir, std::string separator);
 
-    void get_sol(float *t, float *x, float *y, float *z);
-
 private:
     float a, b, x0, y0, z0, step, *sol_x, *sol_y, *sol_z;
 };
@@ -96,8 +86,6 @@ public:
     void print_sol();
     void save_to_csv(std::string dir, std::string separator);
 
-    void get_sol(float *t, float *x, float *y, float *z, float *w);
-
 private:
     float a, b, x0, y0, z0, w0, step, *sol_x, *sol_y, *sol_z, *sol_w;
 };
@@ -111,8 +99,6 @@ public:
     void solveRK4(float (*func_x)(float, float, float, float, float), float (*func_y)(float, float, float, float, float), float step);
     void print_sol();
     void save_to_csv(std::string dir, std::string separator);
-
-    void get_sol(float *t, float *x, float *y);
 
 private:
     float a, b, x0, dx0, y0, dy0, step, *sol_x, *sol_y;
@@ -129,8 +115,6 @@ public:
     void save_to_csv(std::string dir, std::string separator);
 
     int get_order();
-
-    void get_sol(float sols[]);
 
 private:
     float a, b, step, **sol, *sol0;
