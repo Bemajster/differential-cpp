@@ -779,6 +779,65 @@ void FirstOrderODESystem::solveRK2(float (*func_list)(int, float, float[]), floa
     }
 }
 
+void FirstOrderODESystem::solveRK4(float (*func_list)(int, float, float[]), float p_step) {
+    step = p_step;
+
+    int arr_size = ceil((b - a) / step) + 1;
+
+    for(int i = 0; i < order; i++) {
+        sol[i] = new float[arr_size];
+        sol[i][0] = sol0[i];
+    }
+
+    for(int i = 0; i < arr_size; i++) {
+        float k1n[order], k2n[order], k3n[order], k4n[order];
+
+        for(int j = 0; j < order; j++) {
+            float args[order];
+
+            for(int k = 0; k < order; k++) {
+                args[k] = sol[k][i];
+            }
+
+            k1n[j] = func_list(j, a + i * step, args);
+        }
+
+        for(int j = 0; j < order; j++) {
+            float args[order];
+
+            for(int k = 0; k < order; k++) {
+                args[k] = sol[k][i] + step * k1n[k] / 2;
+            }
+
+            k2n[j] = func_list(j, a + i * step + step / 2, args);
+        }
+
+        for(int j = 0; j < order; j++) {
+            float args[order];
+
+            for(int k = 0; k < order; k++) {
+                args[k] = sol[k][i] + step * k2n[k] / 2;
+            }
+
+            k3n[j] = func_list(j, a + i * step + step / 2, args);
+        }
+
+        for(int j = 0; j < order; j++) {
+            float args[order];
+
+            for(int k = 0; k < order; k++) {
+                args[k] = sol[k][i] + step * k3n[k];
+            }
+
+            k4n[j] = func_list(j, a + i * step, args);
+        }
+
+        for(int j = 0; j < order; j++) {
+            sol[j][i + 1] = sol[j][i] + (k1n[j] + 2 * k2n[j] + 2 * k3n[j] + k4n[j]) * step / 6;
+        }
+    }
+}
+
 void FirstOrderODESystem::print_sol() {
     for(int i = 0; i <= ceil((b - a) / step); i++) {
         std::cout << "t = " << a + i * step << " =>";

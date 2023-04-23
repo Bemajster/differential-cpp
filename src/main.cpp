@@ -25,7 +25,7 @@ int main() {
     float sol0[] = {0.1, 0, 0};
 
     FirstOrderODESystem* s = new FirstOrderODESystem(0, 200, 3, sol0);
-    s->solveRK2(&func_list, 0.01);
+    s->solveRK4(&func_list, 0.001);
     s->save_to_csv("aizawa.csv", ";");
 
     return 0;
