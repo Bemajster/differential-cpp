@@ -23,7 +23,7 @@ void FirstOrderODE::solveRK2(float (*func)(float, float), float p_step) {
 
     sol[0] = y0;
 
-    for(int i = 0; i <= arr_size - 1; i++) {
+    for(int i = 0; i < arr_size; i++) {
         float k1 = step * func(a + i * step, sol[i]);
         float k2 = step * func(a + i * step + step, sol[i] + k1);
 
@@ -40,7 +40,7 @@ void FirstOrderODE::solveRK4(float (*func)(float, float), float p_step) {
 
     sol[0] = y0;
 
-    for(int i = 0; i <= arr_size - 1; i++) {
+    for(int i = 0; i < arr_size; i++) {
         float k1 = func(a + i * step, sol[i]);
         float k2 = func(a + i * step + step / 2, sol[i] + step * k1 / 2);
         float k3 = func(a + i * step + step / 2, sol[i] + step * k2 / 2);
@@ -90,7 +90,7 @@ void FirstOrderODETwoSystem::solveRK2(float (*func_x)(float, float, float), floa
     sol_x[0] = x0;
     sol_y[0] = y0;
 
-    for(int i = 0; i <= arr_size - 1; i++) {
+    for(int i = 0; i < arr_size; i++) {
         float k1 = step * func_x(a + i * step, sol_x[i], sol_y[i]);
         float l1 = step * func_y(a + i * step, sol_x[i], sol_y[i]);
 
@@ -113,7 +113,7 @@ void FirstOrderODETwoSystem::solveRK4(float (*func_x)(float, float, float), floa
     sol_x[0] = x0;
     sol_y[0] = y0;
 
-    for(int i = 0; i <= arr_size - 1; i++) {
+    for(int i = 0; i < arr_size; i++) {
         float k1 = func_x(a + i * step, sol_x[i], sol_y[i]);
         float l1 = func_y(a + i * step, sol_x[i], sol_y[i]);
 
@@ -291,7 +291,7 @@ void FirstOrderODEThreeSystem::solveRK4(float (*func_x)(float, float, float, flo
     sol_y[0] = y0;
     sol_z[0] = z0;
 
-    for(int i = 0; i <= arr_size - 1; i++) {
+    for(int i = 0; i < arr_size; i++) {
         float k1 = func_x(a + i * step, sol_x[i], sol_y[i], sol_z[i]);
         float l1 = func_y(a + i * step, sol_x[i], sol_y[i], sol_z[i]);
         float m1 = func_z(a + i * step, sol_x[i], sol_y[i], sol_z[i]);
@@ -358,7 +358,7 @@ void ThirdOrderODE::solveRK2(float (*func)(float, float, float, float), float p_
     sol_dy[0] = dy0;
     sol_ddy[0] = ddy0;
 
-    for(int i = 0; i <= arr_size - 1; i++) {
+    for(int i = 0; i < arr_size; i++) {
         float k1 = step * sol_dy[i];
         float l1 = step * sol_ddy[i];
         float m1 = step * func(a + i * step, sol[i], sol_dy[i], sol_ddy[i]);
@@ -408,7 +408,7 @@ void ThirdOrderODE::solveRK4(float (*func)(float, float, float, float), float p_
     sol_dy[0] = dy0;
     sol_ddy[0] = ddy0;
 
-    for(int i = 0; i <= arr_size - 1; i++) {
+    for(int i = 0; i < arr_size; i++) {
         float k1 = sol_dy[i];
         float l1 = sol_ddy[i];
         float m1 = func(a + i * step, sol[i], sol_dy[i], sol_ddy[i]);
@@ -465,7 +465,7 @@ void FirstOrderODEFourSystem::solveRK2(float (*func_x)(float, float, float, floa
     sol_z[0] = z0;
     sol_w[0] = w0;
 
-    for(int i = 0; i <= arr_size - 1; i++) {
+    for(int i = 0; i < arr_size; i++) {
         float k1 = step * func_x(a + i * step, sol_x[i], sol_y[i], sol_z[i], sol_w[i]);
         float l1 = step * func_y(a + i * step, sol_x[i], sol_y[i], sol_z[i], sol_w[i]);
         float m1 = step * func_z(a + i * step, sol_x[i], sol_y[i], sol_z[i], sol_w[i]);
@@ -498,7 +498,7 @@ void FirstOrderODEFourSystem::solveRK4(float (*func_x)(float, float, float, floa
     sol_z[0] = z0;
     sol_w[0] = w0;
 
-    for(int i = 0; i <= arr_size - 1; i++) {
+    for(int i = 0; i < arr_size; i++) {
         float k1 = func_x(a + i * step, sol_x[i], sol_y[i], sol_z[i], sol_w[i]);
         float l1 = func_y(a + i * step, sol_x[i], sol_y[i], sol_z[i], sol_w[i]);
         float m1 = func_z(a + i * step, sol_x[i], sol_y[i], sol_z[i], sol_w[i]);
@@ -574,7 +574,7 @@ void SecondOrderODETwoSystem::solveRK2(float (*func_x)(float, float, float, floa
     sol_y[0] = y0;
     sol_dy[0] = dy0;
 
-    for(int i = 0; i <= arr_size - 1; i++) {
+    for(int i = 0; i < arr_size; i++) {
         float k1 = step * sol_dx[i];
         float l1 = step * sol_dy[i];
         float m1 = step * func_x(a + i * step, sol_x[i], sol_dx[i], sol_y[i], sol_dy[i]);
