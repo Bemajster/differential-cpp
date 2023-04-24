@@ -824,6 +824,79 @@ void ODE::solveRK2(float (*func)(float, float[]), float p_step) {
     delete sol_d;
 }
 
+void ODE::solveRK4(float (*func)(float, float[]), float p_step) {
+    step = p_step;
+
+    int arr_size = ceil((b - a) / step) + 1;
+
+    float **sol_d;
+    sol_d = new float*[order];
+
+    for(int i = 0; i < order; i++) {
+        sol_d[i] = new float[arr_size];
+        sol_d[i][0] = sol0[i];
+    }
+
+    for(int i = 0; i < arr_size; i++) {
+        float k1n[order], k2n[order], k3n[order], k4n[order], args1[order], args2[order], args3[order], args4[order];
+
+        for(int j = 0; j < order - 1; j++) {
+            k1n[j] = sol_d[j+1][i];
+        }
+
+        for(int j = 0; j < order; j++) {
+            args1[j] = sol_d[j][i];
+        }
+
+        k1n[order - 1] = step * func(a + i * step, args1);
+
+        for(int j = 0; j < order - 1; j++) {
+            k2n[j] = sol_d[j+1][i] + step * k1n[j+1] / 2;
+        }
+
+        for(int j = 0; j < order; j++) {
+            args2[j] = sol_d[j][i] + step * k1n[j] / 2;
+        }
+
+        k2n[order - 1] = func(a + i * step + step / 2, args2);
+
+        for(int j = 0; j < order - 1; j++) {
+            k3n[j] = sol_d[j+1][i] + step * k2n[j+1] / 2;
+        }
+
+        for(int j = 0; j < order; j++) {
+            args3[j] = sol_d[j][i] + step * k2n[j] / 2;
+        }
+
+        k3n[order - 1] = func(a + i * step + step / 2, args3);
+
+        for(int j = 0; j < order - 1; j++) {
+            k4n[j] = sol_d[j+1][i] + step * k3n[j+1];
+        }
+
+        for(int j = 0; j < order; j++) {
+            args4[j] = sol_d[j][i] + step * k3n[j];
+        }
+
+        k4n[order - 1] = func(a + i * step, args4);
+
+        for(int j = 0; j < order; j++) {
+            sol_d[j][i + 1] = sol_d[j][i] + (k1n[j] + 2 * k2n[j] + 2 * k3n[j] + k4n[j]) * step / 6;
+        }
+    }
+
+    sol = new float[arr_size];
+    sol = sol_d[0];
+
+    delete sol_d;
+}
+
+void ODE::print_sol() {
+    for(int i = 0; i <= ceil((b - a) / step); i++) {
+        std::cout << "x = " << a + i * step << " => y = " << sol[i] << '\n';
+    }
+}
+
 void ODE::save_to_csv(std::string dir, std::string separator) {
     std::fstream output;
     output.open(dir, std::ios::out);

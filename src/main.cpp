@@ -12,7 +12,7 @@ int main() {
     float sol0[] = {3.05, 0};
 
     ODE* s = new ODE(0, 10, 2, sol0);
-    s->solveRK2(&eq, 0.0001);
+    s->solveRK4(&eq, 0.0001);
     s->save_to_csv("pendulum.csv", ";");
 
     return 0;
