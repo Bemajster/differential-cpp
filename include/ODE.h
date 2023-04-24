@@ -276,3 +276,37 @@ private:
     float a, b, step, **sol, *sol0;
     int order;
 };
+
+class ODE {
+public:
+    ODE(float a, float b, int order, float sol0[]);
+    ~ODE();
+
+    void solveRK2(float (*func)(float, float[]), float step);
+    void solveRK4(float (*func)(float, float[]), float step);
+    void print_sol();
+    void save_to_csv(std::string dir, std::string separator);
+
+    int get_order();
+
+    float* get_sol() {
+        return sol;
+    }
+
+    float* get_interval() {
+        float *intr;
+
+        int arr_size = ceil((b - a) / step) + 1;
+        intr = new float[arr_size];
+
+        for(int i = 0; i < arr_size; i++) {
+            intr[i] = a + i * step;
+        }
+
+        return intr;
+    }
+
+private:
+    float a, b, step, *sol0, *sol;
+    int order;
+};

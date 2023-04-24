@@ -761,3 +761,29 @@ void FirstOrderODESystem::save_to_csv(std::string dir, std::string separator) {
 int FirstOrderODESystem::get_order() {
     return order;
 }
+
+ODE::ODE(float p_a, float p_b, int p_order, float p_sol0[]) {
+    a = p_a; 
+    b = p_b;
+    order = p_order;
+
+    sol0 = new float[order];
+
+    sol0 = p_sol0;
+}
+
+ODE::~ODE() {
+    delete sol0;
+    delete sol;
+}
+
+void ODE::save_to_csv(std::string dir, std::string separator) {
+    std::fstream output;
+    output.open(dir, std::ios::out);
+
+    for(int i = 0; i <= ceil((b - a) / step); i++) {
+        output << a + i * step << separator << sol[i] << std::endl;
+    }
+
+    output.close();
+}
