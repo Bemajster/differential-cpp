@@ -172,7 +172,7 @@ void SecondOrderODE::solveRK2(float (*func)(float, float, float), float p_step) 
     sol[0] = y0;
     sol_dy[0] = dy0;
 
-    for(int i = 0; i <= arr_size - 1; i++) {
+    for(int i = 0; i < arr_size; i++) {
         float k1 = step * sol_dy[i];
         float l1 = step * func(a + i * step, sol[i], sol_dy[i]);
 
@@ -199,7 +199,7 @@ void SecondOrderODE::solveRK4(float (*func)(float, float, float), float p_step) 
     sol[0] = y0;
     sol_dy[0] = dy0;
 
-    for(int i = 0; i <= arr_size - 1; i++) {
+    for(int i = 0; i < arr_size; i++) {
         float k1 = sol_dy[i];
         float l1 = func(a + i * step, sol[i], sol_dy[i]);
 
@@ -263,7 +263,7 @@ void FirstOrderODEThreeSystem::solveRK2(float (*func_x)(float, float, float, flo
     sol_y[0] = y0;
     sol_z[0] = z0;
 
-    for(int i = 0; i <= arr_size -1; i++) {
+    for(int i = 0; i < arr_size; i++) {
         float k1 = step * func_x(a + i * step, sol_x[i], sol_y[i], sol_z[i]);
         float l1 = step * func_y(a + i * step, sol_x[i], sol_y[i], sol_z[i]);
         float m1 = step * func_z(a + i * step, sol_x[i], sol_y[i], sol_z[i]);
@@ -621,8 +621,6 @@ FirstOrderODESystem::FirstOrderODESystem(float p_a, float p_b, int p_order, floa
     sol0 = new float[order];
 
     sol0 = p_sol0;
-
-    sol = new float*[order];
 }
 
 FirstOrderODESystem::~FirstOrderODESystem() {
@@ -639,6 +637,8 @@ void FirstOrderODESystem::solveRK2(float (*func_list)(int, float, float[]), floa
     step = p_step;
 
     int arr_size = ceil((b - a) / step) + 1;
+
+    sol = new float*[order];
 
     for(int i = 0; i < order; i++) {
         sol[i] = new float[arr_size];
@@ -775,6 +775,53 @@ ODE::ODE(float p_a, float p_b, int p_order, float p_sol0[]) {
 ODE::~ODE() {
     delete sol0;
     delete sol;
+}
+
+void ODE::solveRK2(float (*func)(float, float[]), float p_step) {
+    step = p_step;
+
+    int arr_size = ceil((b - a) / step) + 1;
+
+    float **sol_d;
+    sol_d = new float*[order];
+
+    for(int i = 0; i < order; i++) {
+        sol_d[i] = new float[arr_size];
+        sol_d[i][0] = sol0[i];
+    }
+
+    for(int i = 0; i < arr_size; i++) {
+        float k1n[order], k2n[order], args1[order], args2[order];
+
+        for(int j = 0; j < order - 1; j++) {
+            k1n[j] = step * sol_d[j+1][i];
+        }
+
+        for(int j = 0; j < order; j++) {
+            args1[j] = sol_d[j][i];
+        }
+
+        k1n[order - 1] = step * func(a + i * step, args1);
+
+        for(int j = 0; j < order - 1; j++) {
+            k2n[j] = step * (sol_d[j+1][i] + k1n[j]);
+        }
+
+        for(int j = 0; j < order; j++) {
+            args2[j] = sol_d[j][i] + k1n[j];
+        }
+
+        k2n[order - 1] = step * func(a + i * step + step, args2);
+
+        for(int j = 0; j < order; j++) {
+            sol_d[j][i + 1] = sol_d[j][i] + (k1n[j] + k2n[j]) / 2;
+        }
+    }
+
+    sol = new float[arr_size];
+    sol = sol_d[0];
+
+    delete sol_d;
 }
 
 void ODE::save_to_csv(std::string dir, std::string separator) {
