@@ -164,10 +164,9 @@ void SecondOrderODE::solveRK2(float (*func)(float, float, float), float p_step) 
 
     int arr_size = ceil((b - a) / step) + 1;
 
-    float *sol_dy;
+    float *sol_dy = new float[arr_size];
 
     sol = new float[arr_size];
-    sol_dy = new float[arr_size];
 
     sol[0] = y0;
     sol_dy[0] = dy0;
@@ -191,10 +190,9 @@ void SecondOrderODE::solveRK4(float (*func)(float, float, float), float p_step) 
 
     int arr_size = ceil((b - a) / step) + 1;
 
-    float *sol_dy;
+    float *sol_dy = new float[arr_size];
 
     sol = new float[arr_size];
-    sol_dy = new float[arr_size];
 
     sol[0] = y0;
     sol_dy[0] = dy0;
@@ -348,11 +346,9 @@ void ThirdOrderODE::solveRK2(float (*func)(float, float, float, float), float p_
 
     int arr_size = ceil((b - a) / step) + 1;
 
-    float *sol_dy, *sol_ddy;
+    float *sol_dy = new float[arr_size], *sol_ddy = new float[arr_size];
 
     sol = new float[arr_size];
-    sol_dy = new float[arr_size];
-    sol_ddy = new float[arr_size];
 
     sol[0] = y0;
     sol_dy[0] = dy0;
@@ -398,11 +394,9 @@ void ThirdOrderODE::solveRK4(float (*func)(float, float, float, float), float p_
 
     int arr_size = ceil((b - a) / step) + 1;
 
-    float *sol_dy, *sol_ddy;
+    float *sol_dy = new float[arr_size], *sol_ddy = new float[arr_size];
 
     sol = new float[arr_size];
-    sol_dy = new float[arr_size];
-    sol_ddy = new float[arr_size];
 
     sol[0] = y0;
     sol_dy[0] = dy0;
@@ -562,12 +556,10 @@ void SecondOrderODETwoSystem::solveRK2(float (*func_x)(float, float, float, floa
 
     int arr_size = ceil((b - a) / step) + 1;
 
-    float *sol_dx, *sol_dy;
+    float *sol_dx = new float[arr_size], *sol_dy = new float[arr_size];
 
     sol_x = new float[arr_size];
-    sol_dx = new float[arr_size];
     sol_y = new float[arr_size];
-    sol_dy = new float[arr_size];
 
     sol_x[0] = x0;
     sol_dx[0] = dx0;
@@ -782,8 +774,7 @@ void ODE::solveRK2(float (*func)(float, float[]), float p_step) {
 
     int arr_size = ceil((b - a) / step) + 1;
 
-    float **sol_d;
-    sol_d = new float*[order];
+    float **sol_d = new float*[order];
 
     for(int i = 0; i < order; i++) {
         sol_d[i] = new float[arr_size];
@@ -829,8 +820,7 @@ void ODE::solveRK4(float (*func)(float, float[]), float p_step) {
 
     int arr_size = ceil((b - a) / step) + 1;
 
-    float **sol_d;
-    sol_d = new float*[order];
+    float **sol_d = new float*[order];
 
     for(int i = 0; i < order; i++) {
         sol_d[i] = new float[arr_size];
